@@ -27,6 +27,8 @@ public class LoginGUI extends JFrame {
         lblSenha = new JLabel("Senha:");
         lblSenha.setBounds(10, 40, 80, 25);
         add(lblSenha);
+//        oii
+
 
         txtSenha = new JPasswordField();
         txtSenha.setBounds(100, 40, 160, 25);
