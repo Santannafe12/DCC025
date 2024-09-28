@@ -6,10 +6,6 @@ public class Administrador extends Usuario {
         this.senha = senha;
     }
 
-    public void login() {
-        // logica p login
-    }
-
     public double getSenha() {
         return senha;
     }

@@ -10,10 +10,6 @@ public class Funcionario extends Usuario {
         this.senha = senha;
     }
 
-    public void login() {
-        // logica p login
-    }
-
     public double getSalario() {
         return salario;
     }
