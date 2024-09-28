@@ -4,7 +4,7 @@ public class Funcionario extends Usuario {
     private double salario;
     private String senha;
 
-    public Funcionario(String nome, String perfil, String email, String cpf, String endereco, Telefone telefone, double salario) {
+    public Funcionario(String nome, String senha, String email, String cpf, String endereco, Telefone telefone, double salario) {
         super(nome, email, cpf, endereco, telefone, Tipo.FUNCIONARIO);
         this.salario = salario;
         this.senha = senha;
@@ -18,7 +18,7 @@ public class Funcionario extends Usuario {
         this.salario = salario;
     }
 
-    public double getSenha() {
+    public String getSenha() {
         return senha;
     }
 
