@@ -42,11 +42,11 @@ public abstract class Usuario {
     }
 
     private boolean validaCpf(String cpf) {
-        cpf = cpf.replaceAll("[^\\d]", "");
+        String regex = "^\\d{3}\\.\\d{3}\\.\\d{3}\\-\\d{2}$";
 
         try {
-            if (cpf.length() != 11) {
-                throw new CpfException("CPF inválido: " + cpf);
+            if (!cpf.matches(regex)) {
+                throw new CpfException("Formato de CPF inválido: " + cpf);
             }
             return true;
         } catch (CpfException e) {
