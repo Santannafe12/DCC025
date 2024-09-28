@@ -5,7 +5,6 @@ import java.util.regex.*;
 
 public abstract class Usuario {
     private String nome;
-    private String senha;
     private String email;
     private String cpf;
     private String endereco;
@@ -15,9 +14,8 @@ public abstract class Usuario {
     };
     private Tipo cargo;
 
-    public Usuario(String nome, String senha, String email, String cpf, String endereco, Telefone telefone, Tipo cargo) {
+    public Usuario(String nome, String email, String cpf, String endereco, Telefone telefone, Tipo cargo) {
         this.nome = nome;
-        this.senha = senha;
         if(validaEmail(email)){
             this.email = email;
         }
@@ -90,10 +88,6 @@ public abstract class Usuario {
 
     public void setNome(String nome) {
         this.nome = nome;
-    }
- 
-    public void setSenha(String senha) {
-        this.senha = senha;
     }
 
     public void setEmail(String email) {
