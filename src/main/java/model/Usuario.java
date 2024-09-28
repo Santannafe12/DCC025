@@ -29,8 +29,6 @@ public abstract class Usuario {
         this.cargo = cargo;
     }
 
-    public abstract void login();
-
     private boolean validaEmail(String email) {
         Pattern pattern = Pattern.compile("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,}$");
         
