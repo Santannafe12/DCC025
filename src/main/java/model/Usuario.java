@@ -6,22 +6,27 @@ import java.util.regex.*;
 public abstract class Usuario {
     private String nome;
     private String senha;
-    private String perfil;
     private String email;
     private String cpf;
-    private boolean tipo;
+    private String endereco;
+    private Telefone telefone;
+    public enum Tipo{
+        CLIENTE, FUNCIONARIO, ADMIN;
+    };
+    private Tipo cargo;
 
-    public Usuario(String nome, String senha, String perfil, String email, String cpf, boolean tipo) {
+    public Usuario(String nome, String senha, String email, String cpf, String endereco, Telefone telefone, Tipo cargo) {
         this.nome = nome;
         this.senha = senha;
-        this.perfil = perfil;
         if(validaEmail(email)){
             this.email = email;
         }
         if(validaCpf(cpf)){
             this.cpf = cpf.replaceAll("[^\\d]", "");
         }
-        this.tipo = tipo;
+        this.endereco = endereco;
+        this.telefone = telefone;
+        this.cargo = cargo;
     }
 
     public abstract void login();
@@ -64,8 +69,8 @@ public abstract class Usuario {
         return this.email;
     }
 
-    public boolean getTipo(){
-        return this.tipo;
+    public Tipo getCargo(){
+        return this.cargo;
     }
 
     public String getCpf() {
@@ -74,5 +79,36 @@ public abstract class Usuario {
                 this.cpf.substring(6, 9) + "-" + 
                 this.cpf.substring(9, 11);
     }
-    
+
+    public String getEndereco(){
+        return this.endereco;
+    }
+
+    public String getTelefone(){
+        return this.telefone.toString();
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+ 
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    public void setEndereco(String endereco) {
+        this.endereco = endereco;
+    }
+
+    public void setTelefone(Telefone telefone) {
+        this.telefone = telefone;
+    }
 }
