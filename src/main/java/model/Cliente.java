@@ -1,7 +1,7 @@
 package model;
 
 public class Cliente extends Usuario{
-    public Cliente(String nome, String senha, String perfil, String email, String cpf) {
-        super(nome, senha, perfil, email, cpf, false);
+    public Cliente(String nome, String email, String cpf, String endereco, Telefone telefone, Tipo cargo) {
+        super(nome, email, cpf, endereco, telefone, Tipo.CLIENTE);
     }
 }
