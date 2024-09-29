@@ -1,9 +1,11 @@
 package model;
 
 import exception.*;
+
+import java.io.Serializable;
 import java.util.regex.*;
 
-public abstract class Usuario {
+public abstract class Usuario implements Serializable {
     private String nome;
     private String email;
     private String cpf;

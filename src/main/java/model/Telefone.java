@@ -1,8 +1,10 @@
 package model;
 
+import java.io.Serializable;
+
 import exception.*;
 
-public class Telefone {
+public class Telefone implements Serializable {
     private int ddd;
     private int numero;
 
@@ -24,7 +26,7 @@ public class Telefone {
 
         } catch (TelefoneException e) {
             System.out.println("Erro: " + e.getMessage());
-            return null; 
+            return null;
 
         }
     }
