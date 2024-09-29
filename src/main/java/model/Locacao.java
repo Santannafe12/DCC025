@@ -9,12 +9,18 @@ public class Locacao {
     private double valorTotal;
     private Data dataDeDevolucao; 
 
-    public Locacao(Cliente cliente, int numeroPedido, Filme filme, int quantidade, double valorTotal, Data dataDeDevolucao) {
+    public Locacao(Cliente cliente, int numeroPedido, Data dataDeDevolucao) {
         this.cliente = cliente;
         this.numeroPedido = numeroPedido;
         this.filmes = new ArrayList<>();
-        this.valorTotal = valorTotal;
+        this.valorTotal = 0;
         this.dataDeDevolucao = dataDeDevolucao;
+    }
+
+    public void adicionaFilme(Filme filme){
+        if(filme.verificarDisponibilidade()){
+            filmes.add(filme);
+        }
     }
 
     public Cliente getCliente() {
@@ -30,6 +36,9 @@ public class Locacao {
     }
 
     public double getValorTotal() {
+        for (Filme filme : filmes) {
+            this.valorTotal += filme.getPreco();
+        }
         return valorTotal;
     }
 

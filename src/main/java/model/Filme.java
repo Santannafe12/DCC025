@@ -4,16 +4,14 @@ public class Filme {
     private String titulo;
     private String genero;
     private Data dataLancamento;
-    private String duracao;
     private String diretor;
     private double preco;
     private boolean disponivel;
 
-    public Filme(String titulo, String genero, Data dataLancamento, String duracao, String diretor, double preco){
+    public Filme(String titulo, String genero, Data dataLancamento, String diretor, double preco){
         this.titulo = titulo;
         this.genero =  genero;
         this.dataLancamento = dataLancamento;
-        this.duracao = duracao;
         this.diretor = diretor;
         this.preco = preco;
         this.disponivel = true;
@@ -30,10 +28,6 @@ public class Filme {
 
     public String getDataLancamento() {
         return this.dataLancamento.toString();
-    }
-
-    public String getDuracao() {
-        return this.duracao;
     }
 
     public String getDiretor() {
