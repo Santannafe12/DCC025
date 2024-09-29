@@ -1,18 +1,18 @@
 package model;
 
+import java.util.*;
+
 public class Locacao {
     private Cliente cliente;
     private int numeroPedido;
-    private Filme filme;
-    private int quantidade;
+    private List<Filme> filmes;
     private double valorTotal;
     private Data dataDeDevolucao; 
 
     public Locacao(Cliente cliente, int numeroPedido, Filme filme, int quantidade, double valorTotal, Data dataDeDevolucao) {
         this.cliente = cliente;
         this.numeroPedido = numeroPedido;
-        this.filme = filme;
-        this.quantidade = quantidade;
+        this.filmes = new ArrayList<>();
         this.valorTotal = valorTotal;
         this.dataDeDevolucao = dataDeDevolucao;
     }
@@ -25,12 +25,8 @@ public class Locacao {
         return numeroPedido;
     }
 
-    public Filme getFilme() {
-        return filme;
-    }
-
-    public int getQuantidade() {
-        return quantidade;
+    public List<Filme> getFilmes() {
+        return filmes;
     }
 
     public double getValorTotal() {
