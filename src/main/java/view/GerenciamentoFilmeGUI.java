@@ -96,7 +96,7 @@ public class GerenciamentoFilmeGUI {
         voltarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new MainGUI();
+                new MainGUI(false);
                 frame.dispose();
             }
         });
