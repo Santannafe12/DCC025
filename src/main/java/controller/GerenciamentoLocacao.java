@@ -1,6 +1,7 @@
 package controller;
 
-import model.Funcionario;
+import model.Locacao;
+
 import java.util.*;
 
 public class GerenciamentoLocacao {
@@ -10,11 +11,11 @@ public class GerenciamentoLocacao {
         locacao = new ArrayList<>();
     }
 
-    public void adicionaLocacao(Locacao locacao){
-        locacao.add(locacao);
+    public void adicionaLocacao(Locacao novaLocacao){
+        locacao.add(novaLocacao);
     }
 
-    public void removeLocacao(Locacao locacao){
-        locacao.remove(locacao);
+    public void removeLocacao(Locacao novaLocacao){
+        locacao.remove(novaLocacao);
     }
 }
