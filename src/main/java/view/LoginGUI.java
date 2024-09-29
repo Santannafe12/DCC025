@@ -54,10 +54,31 @@ public class LoginGUI extends JFrame {
     }
 
     private boolean validarLogin(String usuario, String senha) {
-        // refazer o retorno abaixo
-        return "admin".equals(usuario) && "123".equals(senha);
+        // Aqui você faria a validação real, como ler de um arquivo ou banco de dados
+        if ("admin".equals(usuario) && "admin".equals(senha)) {
+            return true; // Admin
+        } else if ("funcionario".equals(usuario) && "123".equals(senha)) {
+            return true; // Funcionário
+        }
+        return false;
     }
-
+    
+     // Método para abrir a tela correta
+    private void abrirTelaCorrespondente(String usuario) {
+        if ("admin".equals(usuario)) {
+            // Aqui abriria a tela do administrador
+            JOptionPane.showMessageDialog(this, "Bem-vindo, Administrador!");
+            AdminGUI adminGUI = new AdminGUI();
+            adminGUI.setVisible(true);
+            dispose(); // Fecha a tela de login
+        } else if ("funcionario".equals(usuario)) {
+            // Aqui abriria a tela do funcionário
+            JOptionPane.showMessageDialog(this, "Bem-vindo, Funcionário!");
+            FuncionarioGUI funcionarioGUI = new FuncionarioGUI();
+            funcionarioGUI.setVisible(true);
+            dispose(); // Fecha a tela de login
+        }
+    }
     public static void main(String[] args) {
         LoginGUI login = new LoginGUI();
         login.setVisible(true);

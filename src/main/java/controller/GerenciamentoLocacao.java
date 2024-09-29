@@ -1,20 +1,25 @@
 package controller;
 
-import model.Funcionario;
-import java.util.*;
+import model.Locacao;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GerenciamentoLocacao {
-    List<Locacao> locacao;
+    private List<Locacao> locacoes;
 
-    public GerenciamentoLocacao(){
-        locacao = new ArrayList<>();
+    public GerenciamentoLocacao() {
+        this.locacoes = new ArrayList<>(); // Inicializa a lista de locações
     }
 
-    public void adicionaLocacao(Locacao locacao){
-        locacao.add(locacao);
+    // Método para adicionar uma locação
+    public void addLocacao(Locacao locacao) {
+        locacoes.add(locacao); // Adiciona a locação à lista
     }
 
-    public void removeLocacao(Locacao locacao){
-        locacao.remove(locacao);
+    // Método para remover uma locação
+    public void removeLocacao(Locacao locacao) {
+        locacoes.remove(locacao); // Remove a locação da lista
     }
+
+    // Outros métodos para gerenciar locações podem ser adicionados aqui
 }

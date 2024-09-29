@@ -1,20 +1,27 @@
 package controller;
 
-import model.Funcionario;
+import model.Administrador;
 import java.util.*;
 
 public class GerenciamentoAdmin {
-    List<Funcionario> funcionarios;
+    private List<Administrador> administradores; // Renomeado para plural
 
-    public GerenciamentoAdmin(){
-        funcionarios = new ArrayList<>();
+    public GerenciamentoAdmin() {
+        administradores = new ArrayList<>();
     }
 
-    public void adicionaFuncionario(Funcionario funcionario){
-        funcionarios.add(funcionario);
+    // Método para adicionar um administrador
+    public void adicionaAdmin(Administrador admin) {
+        administradores.add(admin); // Corrigido para usar a lista
     }
 
-    public void removeFuncionario(Funcionario funcionario){
-        funcionarios.remove(funcionario);
+    // Método para remover um administrador
+    public void removeAdmin(Administrador admin) {
+        administradores.remove(admin); // Corrigido para usar a lista
+    }
+
+    // Método para listar administradores (opcional)
+    public List<Administrador> getAdministradores() {
+        return administradores;
     }
 }
