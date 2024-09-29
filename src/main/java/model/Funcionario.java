@@ -1,13 +1,28 @@
 package model;
 
 public class Funcionario extends Usuario {
-    public Funcionario(String nome, String senha, String perfil) {
-        super(nome, senha, perfil);
+    private double salario;
+    private String senha;
+
+    public Funcionario(String nome, String senha, String email, String cpf, String endereco, Telefone telefone, double salario) {
+        super(nome, email, cpf, endereco, telefone, Tipo.FUNCIONARIO);
+        this.salario = salario;
+        this.senha = senha;
     }
 
-    public void login() {
-        // logica p login
+    public double getSalario() {
+        return salario;
     }
 
-    // metodos p administradores
+    public void setSalario(double salario){
+        this.salario = salario;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha){
+        this.senha = senha;
+    }
 }
