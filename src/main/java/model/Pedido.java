@@ -1,20 +1,19 @@
 package model;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class Locacao {
+public class Pedido implements Serializable {
     private Cliente cliente;
     private int numeroPedido;
     private List<Filme> filmes;
     private double valorTotal;
-    private Data dataDeDevolucao; 
 
-    public Locacao(Cliente cliente, int numeroPedido, Data dataDeDevolucao) {
+    public Pedido(Cliente cliente, int numeroPedido) {
         this.cliente = cliente;
         this.numeroPedido = numeroPedido;
         this.filmes = new ArrayList<>();
         this.valorTotal = 0;
-        this.dataDeDevolucao = dataDeDevolucao;
     }
 
     public void adicionaFilme(Filme filme){
@@ -40,9 +39,5 @@ public class Locacao {
             this.valorTotal += filme.getPreco();
         }
         return valorTotal;
-    }
-
-    public Data getDataDeDevolucao() {
-        return dataDeDevolucao;
     }
 }

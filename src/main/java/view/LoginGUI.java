@@ -43,7 +43,6 @@ public class LoginGUI extends JFrame {
 
                 if (validarLogin(usuario, senha)) {
                     JOptionPane.showMessageDialog(null, "Login bem-sucedido");
-                    // abre tela do sistema com o perfil
                 } else {
                     JOptionPane.showMessageDialog(null, "Login inválido");
                 }
@@ -52,7 +51,6 @@ public class LoginGUI extends JFrame {
     }
 
     private boolean validarLogin(String usuario, String senha) {
-        // refazer o retorno abaixo
         return "admin".equals(usuario) && "123".equals(senha);
     }
 

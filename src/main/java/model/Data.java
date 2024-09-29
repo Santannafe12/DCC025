@@ -2,7 +2,9 @@ package model;
 
 import exception.*;
 
-public class Data {
+import java.io.Serializable;
+
+public class Data implements Serializable {
     private int dia;
     private int mes;
     private int ano;

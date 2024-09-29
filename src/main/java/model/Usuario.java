@@ -10,19 +10,20 @@ public abstract class Usuario implements Serializable {
     private String email;
     private String cpf;
     private String endereco;
-    private Telefone telefone;
+    private String telefone;
     public enum Tipo{
-        CLIENTE, FUNCIONARIO, ADMIN;
-    };
-    private Tipo cargo;
+        CLIENTE, FUNCIONARIO, ADMIN
+    }
 
-    public Usuario(String nome, String email, String cpf, String endereco, Telefone telefone, Tipo cargo) {
+    private final Tipo cargo;
+
+    public Usuario(String nome, String email, String cpf, String endereco, String telefone, Tipo cargo) {
         this.nome = nome;
         if(validaEmail(email)){
             this.email = email;
         }
         if(validaCpf(cpf)){
-            this.cpf = cpf.replaceAll("[^\\d]", "");
+            this.cpf = cpf.replaceAll("\\D", "");
         }
         this.endereco = endereco;
         this.telefone = telefone;
@@ -30,7 +31,7 @@ public abstract class Usuario implements Serializable {
     }
 
     private boolean validaEmail(String email) {
-        Pattern pattern = Pattern.compile("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,}$");
+        Pattern pattern = Pattern.compile("^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,}$");
         
         try {
             Matcher matcher = pattern.matcher(email);
@@ -45,7 +46,7 @@ public abstract class Usuario implements Serializable {
     }
 
     private boolean validaCpf(String cpf) {
-        String regex = "^\\d{3}\\.\\d{3}\\.\\d{3}\\-\\d{2}$";
+        String regex = "^\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}$";
 
         try {
             if (!cpf.matches(regex)) {
@@ -83,7 +84,7 @@ public abstract class Usuario implements Serializable {
     }
 
     public String getTelefone(){
-        return this.telefone.toString();
+        return this.telefone;
     }
 
     public void setNome(String nome) {
@@ -102,7 +103,7 @@ public abstract class Usuario implements Serializable {
         this.endereco = endereco;
     }
 
-    public void setTelefone(Telefone telefone) {
+    public void setTelefone(String telefone) {
         this.telefone = telefone;
     }
 }

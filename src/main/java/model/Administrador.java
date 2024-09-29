@@ -3,7 +3,7 @@ package model;
 public class Administrador extends Usuario {
     private String senha;
 
-    public Administrador(String nome, String email, String senha, String cpf, String endereco, Telefone telefone ){
+    public Administrador(String nome, String email, String senha, String cpf, String endereco, String telefone ){
         super(nome, email, cpf, endereco, telefone, Tipo.ADMIN);
         this.senha = senha;
     }

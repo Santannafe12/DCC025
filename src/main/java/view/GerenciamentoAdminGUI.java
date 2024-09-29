@@ -2,7 +2,6 @@ package view;
 
 import controller.GerenciamentoAdmin;
 import model.Funcionario;
-import model.Telefone;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,26 +20,26 @@ public class GerenciamentoAdminGUI {
     private void criarTela() {
         JFrame frame = new JFrame("Sistema de Gerenciamento de Funcionários");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(400, 200);
-        frame.setLayout(new FlowLayout());
+        frame.setSize(400, 400);
+        frame.setLayout(new BorderLayout());
+
+        // Painel para os campos de entrada
+        JPanel painelEntrada = new JPanel(new GridLayout(4, 2));
 
         JButton adicionarButton = new JButton("Adicionar Funcionário");
-        JButton removerButton = new JButton("Remover Funcionário");
-        JButton editarButton = new JButton("Editar Funcionário");
-        JButton listarButton = new JButton("Listar Funcionários");
-
         adicionarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 abrirTelaAdicionarFuncionario();
             }
         });
+        painelEntrada.add(adicionarButton);
 
+        JButton removerButton = new JButton("Remover Funcionário");
         removerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String cpf = JOptionPane.showInputDialog(frame, "Digite o CPF do funcionário a ser removido:");
-
                 if (cpf != null && !cpf.trim().isEmpty()) {
                     Funcionario funcionarioARemover = localizarFuncionarioPorCPF(cpf);
                     if (funcionarioARemover != null) {
@@ -54,7 +53,9 @@ public class GerenciamentoAdminGUI {
                 }
             }
         });
+        painelEntrada.add(removerButton);
 
+        JButton editarButton = new JButton("Editar Funcionário");
         editarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -71,7 +72,9 @@ public class GerenciamentoAdminGUI {
                 }
             }
         });
+        painelEntrada.add(editarButton);
 
+        JButton listarButton = new JButton("Listar Funcionários");
         listarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -90,11 +93,20 @@ public class GerenciamentoAdminGUI {
                 JOptionPane.showMessageDialog(frame, lista.toString());
             }
         });
+        painelEntrada.add(listarButton);
 
-        frame.add(adicionarButton);
-        frame.add(removerButton);
-        frame.add(editarButton);
-        frame.add(listarButton);
+        // Botão Voltar
+        JButton voltarButton = new JButton("Voltar");
+        voltarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new MainGUI();
+                frame.dispose();
+            }
+        });
+        painelEntrada.add(voltarButton);
+
+        frame.add(painelEntrada, BorderLayout.NORTH);
 
         frame.setVisible(true);
     }
@@ -137,8 +149,7 @@ public class GerenciamentoAdminGUI {
                 String cpf = cpfField.getText();
                 String endereco = enderecoField.getText();
                 double salario = Double.parseDouble(salarioField.getText());
-                String[] telefoneParts = telefoneField.getText().split(" ");
-                Telefone telefone = new Telefone(Integer.parseInt(telefoneParts[0]), Integer.parseInt(telefoneParts[1]));
+                String telefone = telefoneField.getText();
 
                 Funcionario funcionario = new Funcionario(nome, senha, email, cpf, endereco, telefone, salario);
                 gerenciamentoAdmin.adicionar(funcionario);
@@ -152,52 +163,48 @@ public class GerenciamentoAdminGUI {
     }
 
     private void abrirTelaEditarFuncionario(Funcionario funcionario) {
-      JFrame editarFrame = new JFrame("Editar Funcionário");
-      editarFrame.setSize(300, 300);
-      editarFrame.setLayout(new GridLayout(0, 2));
-  
-      JTextField nomeField = new JTextField(funcionario.getNome());
-      JTextField salarioField = new JTextField(String.valueOf(funcionario.getSalario()));
-      JTextField emailField = new JTextField(funcionario.getEmail());
-      JTextField enderecoField = new JTextField(funcionario.getEndereco());
-      
-      // Não adiciona campo para telefone
-      // JTextField telefoneField = new JTextField(funcionario.getTelefone());
-  
-      editarFrame.add(new JLabel("Nome:"));
-      editarFrame.add(nomeField);
-      editarFrame.add(new JLabel("Email:"));
-      editarFrame.add(emailField);
-      editarFrame.add(new JLabel("Endereço:"));
-      editarFrame.add(enderecoField);
-      editarFrame.add(new JLabel("Salário:"));
-      editarFrame.add(salarioField);
-  
-      JButton salvarButton = new JButton("Salvar");
-      salvarButton.addActionListener(new ActionListener() {
-          @Override
-          public void actionPerformed(ActionEvent e) {
-              String novoNome = nomeField.getText();
-              double novoSalario = Double.parseDouble(salarioField.getText());
-              String novoEmail = emailField.getText();
-              String novoEndereco = enderecoField.getText();
-              
-              funcionario.setNome(novoNome);
-              funcionario.setSalario(novoSalario);
-              funcionario.setEmail(novoEmail);
-              funcionario.setEndereco(novoEndereco);
-              
-              gerenciamentoAdmin.editar(funcionario);
-  
-              JOptionPane.showMessageDialog(editarFrame, "Funcionário editado com sucesso!");
-              editarFrame.dispose();
-          }
-      });
-  
-      editarFrame.add(salvarButton);
-      editarFrame.setVisible(true);
-  }
-  
+        JFrame editarFrame = new JFrame("Editar Funcionário");
+        editarFrame.setSize(300, 300);
+        editarFrame.setLayout(new GridLayout(0, 2));
+
+        JTextField nomeField = new JTextField(funcionario.getNome());
+        JTextField salarioField = new JTextField(String.valueOf(funcionario.getSalario()));
+        JTextField emailField = new JTextField(funcionario.getEmail());
+        JTextField enderecoField = new JTextField(funcionario.getEndereco());
+
+        editarFrame.add(new JLabel("Nome:"));
+        editarFrame.add(nomeField);
+        editarFrame.add(new JLabel("Email:"));
+        editarFrame.add(emailField);
+        editarFrame.add(new JLabel("Endereço:"));
+        editarFrame.add(enderecoField);
+        editarFrame.add(new JLabel("Salário:"));
+        editarFrame.add(salarioField);
+
+        JButton salvarButton = new JButton("Salvar");
+        salvarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String novoNome = nomeField.getText();
+                double novoSalario = Double.parseDouble(salarioField.getText());
+                String novoEmail = emailField.getText();
+                String novoEndereco = enderecoField.getText();
+
+                funcionario.setNome(novoNome);
+                funcionario.setSalario(novoSalario);
+                funcionario.setEmail(novoEmail);
+                funcionario.setEndereco(novoEndereco);
+
+                gerenciamentoAdmin.editar(funcionario);
+
+                JOptionPane.showMessageDialog(editarFrame, "Funcionário editado com sucesso!");
+                editarFrame.dispose();
+            }
+        });
+
+        editarFrame.add(salvarButton);
+        editarFrame.setVisible(true);
+    }
 
     private Funcionario localizarFuncionarioPorCPF(String cpf) {
         List<Funcionario> funcionarios = gerenciamentoAdmin.listar();

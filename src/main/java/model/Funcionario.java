@@ -6,7 +6,7 @@ public class Funcionario extends Usuario {
     private double salario;
     private String senha;
 
-    public Funcionario(String nome, String senha, String email, String cpf, String endereco, Telefone telefone,
+    public Funcionario(String nome, String senha, String email, String cpf, String endereco, String telefone,
             double salario) {
         super(nome, email, cpf, endereco, telefone, Tipo.FUNCIONARIO);
         this.salario = salario;
