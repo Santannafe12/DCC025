@@ -44,11 +44,11 @@ public class Filme {
         return this.preco;
     }
 
-    public boolean estaDisponivel(){
-        return this.disponivel;
-    }
-
     public void setPreco(double preco) {
         this.preco = preco;
+    }
+
+    public boolean verificarDisponibilidade() {
+        return disponivel;
     }
 }
