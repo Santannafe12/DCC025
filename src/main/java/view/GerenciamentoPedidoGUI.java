@@ -79,7 +79,7 @@ public class GerenciamentoPedidoGUI extends JFrame {
         voltarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new MainGUI();
+                new MainGUI(false);
                 dispose();
             }
         });

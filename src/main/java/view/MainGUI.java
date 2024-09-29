@@ -6,22 +6,24 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class MainGUI extends JFrame {
-
-    public MainGUI() {
+    public MainGUI(boolean isAdmin) { // Adiciona um parâmetro para verificar se é administrador
         setTitle("Tela Inicial");
         setSize(300, 200);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new GridLayout(5, 1));
 
-        JButton gerenciarFuncionarioButton = new JButton("Gerenciar Funcionários");
-        gerenciarFuncionarioButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new GerenciamentoAdminGUI();
-                dispose();
-            }
-        });
+        if (isAdmin) { // Se for admin, mostra o botão de gerenciar funcionários
+            JButton gerenciarFuncionarioButton = new JButton("Gerenciar Funcionários");
+            gerenciarFuncionarioButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    new GerenciamentoAdminGUI();
+                    dispose();
+                }
+            });
+            add(gerenciarFuncionarioButton); // Adiciona o botão de gerenciar funcionários
+        }
 
         JButton gerenciarClienteButton = new JButton("Gerenciar Clientes");
         gerenciarClienteButton.addActionListener(new ActionListener() {
@@ -50,7 +52,6 @@ public class MainGUI extends JFrame {
             }
         });
 
-        add(gerenciarFuncionarioButton);
         add(gerenciarClienteButton);
         add(gerenciarFilmeButton);
         add(gerenciarPedidoButton);
@@ -59,6 +60,6 @@ public class MainGUI extends JFrame {
     }
 
     public static void main(String[] args) {
-        new MainGUI();
+        new MainGUI(true); // Exemplo de chamada com admin como false
     }
 }
