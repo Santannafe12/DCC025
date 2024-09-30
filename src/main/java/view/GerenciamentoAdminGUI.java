@@ -95,7 +95,6 @@ public class GerenciamentoAdminGUI {
         });
         painelEntrada.add(listarButton);
 
-        // Botão Voltar
         JButton voltarButton = new JButton("Voltar");
         voltarButton.addActionListener(new ActionListener() {
             @Override

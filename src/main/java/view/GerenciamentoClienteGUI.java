@@ -80,9 +80,8 @@ public class GerenciamentoClienteGUI extends JFrame {
         voltarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Você pode decidir se quer voltar para uma tela específica ou apenas fechar
-                new MainGUI(false); // Passando false ou true dependendo do caso
-                dispose(); // Fecha a tela atual
+                new MainGUI(false);
+                dispose();
             }
         });
         add(voltarButton);
