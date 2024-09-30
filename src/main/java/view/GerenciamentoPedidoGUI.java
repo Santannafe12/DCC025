@@ -1,3 +1,8 @@
+// Felipe Souza Magalhães Sant'Anna / 202465148A
+// Gabriel de Oliveira Vieira / 202265029A
+// Isabela Salvador Romão / 202165065AB
+// Maria Luiza Dornelas Corrêa / 201665194C
+
 package view;
 
 import controller.GerenciamentoCliente;
@@ -9,8 +14,6 @@ import model.Pedido;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.List;
 
 public class GerenciamentoPedidoGUI extends JFrame {
@@ -29,12 +32,12 @@ public class GerenciamentoPedidoGUI extends JFrame {
 
     private void criarTela() {
         setTitle("Gerenciamento de Pedidos");
-        setSize(400, 400);
+        setSize(600, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
-        JPanel painelEntrada = new JPanel(new GridLayout(5, 2));
+        JPanel painelEntrada = new JPanel(new GridLayout(9, 2));
 
         painelEntrada.add(new JLabel("Número do Pedido:"));
         numeroPedidoField = new JTextField();
@@ -49,39 +52,21 @@ public class GerenciamentoPedidoGUI extends JFrame {
         painelEntrada.add(filmeTituloField);
 
         JButton adicionarButton = new JButton("Adicionar Pedido");
-        adicionarButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                adicionarPedido();
-            }
-        });
+        adicionarButton.addActionListener(e -> adicionarPedido());
         painelEntrada.add(adicionarButton);
 
         JButton removerButton = new JButton("Remover Pedido");
-        removerButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                removerPedido();
-            }
-        });
+        removerButton.addActionListener(e -> removerPedido());
         painelEntrada.add(removerButton);
 
         JButton editarButton = new JButton("Editar Pedido");
-        editarButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                editarPedido();
-            }
-        });
+        editarButton.addActionListener(e -> editarPedido());
         painelEntrada.add(editarButton);
 
         JButton voltarButton = new JButton("Voltar");
-        voltarButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new MainGUI();
-                dispose();
-            }
+        voltarButton.addActionListener(e -> {
+            new MainGUI();
+            dispose();
         });
         painelEntrada.add(voltarButton);
 
@@ -90,12 +75,7 @@ public class GerenciamentoPedidoGUI extends JFrame {
         JScrollPane scrollPane = new JScrollPane(listaPedidosArea);
 
         JButton listarButton = new JButton("Listar Pedidos");
-        listarButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                listarPedidos();
-            }
-        });
+        listarButton.addActionListener(e -> listarPedidos());
 
         add(painelEntrada, BorderLayout.NORTH);
         add(scrollPane, BorderLayout.CENTER);
@@ -146,46 +126,54 @@ public class GerenciamentoPedidoGUI extends JFrame {
     }
 
     private void removerPedido() {
-        String numeroPedido = numeroPedidoField.getText();
-        if (numeroPedido.isEmpty()) {
+        String numeroPedido = JOptionPane.showInputDialog(this, "Digite o número do pedido a ser removido:");
+        if (numeroPedido == null || numeroPedido.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Por favor, insira o número do pedido a ser removido.", "Erro", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        Pedido pedido = new Pedido(null, Integer.parseInt(numeroPedido));
-        gerenciamentoPedido.remover(pedido);
-        JOptionPane.showMessageDialog(this, "Pedido removido com sucesso!");
-        limparCampos();
+        try {
+            Pedido pedido = new Pedido(null, Integer.parseInt(numeroPedido));
+            gerenciamentoPedido.remover(pedido);
+            JOptionPane.showMessageDialog(this, "Pedido removido com sucesso!");
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Número do pedido inválido.", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private void editarPedido() {
-        String numeroPedido = numeroPedidoField.getText();
-        String cpfCliente = clienteCpfField.getText();
-
-        if (numeroPedido.isEmpty() || cpfCliente.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Por favor, preencha todos os campos.", "Erro", JOptionPane.ERROR_MESSAGE);
+        String numeroPedido = JOptionPane.showInputDialog(this, "Digite o número do pedido a ser editado:");
+        if (numeroPedido == null || numeroPedido.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor, insira o número do pedido a ser editado.", "Erro", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        Cliente cliente = gerenciamentoCliente.buscarPorCpf(cpfCliente);
-        if (cliente == null) {
-            JOptionPane.showMessageDialog(this, "Cliente não encontrado com o CPF: " + cpfCliente, "Erro", JOptionPane.ERROR_MESSAGE);
+        String novoTituloFilme = JOptionPane.showInputDialog(this, "Digite o novo título do filme:");
+        if (novoTituloFilme == null || novoTituloFilme.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor, insira o novo título do filme.", "Erro", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        Pedido pedido = new Pedido(cliente, Integer.parseInt(numeroPedido));
-        gerenciamentoPedido.editar(pedido);
-        JOptionPane.showMessageDialog(this, "Pedido editado com sucesso!");
-        limparCampos();
+        try {
+            Pedido pedido = new Pedido(null, Integer.parseInt(numeroPedido));
+            gerenciamentoPedido.editar(pedido);
+            JOptionPane.showMessageDialog(this, "Pedido editado com sucesso!");
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Número do pedido inválido.", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private void listarPedidos() {
         List<Pedido> pedidos = gerenciamentoPedido.listar();
         StringBuilder sb = new StringBuilder();
-        for (Pedido p : pedidos) {
-            sb.append("Número do Pedido: ").append(p.getNumeroPedido())
-                    .append(", Cliente: ").append(p.getCliente().getNome())
-                    .append(", Filmes: ").append(p.getFilmes().stream().map(Filme::getTitulo).toList()).append("\n");
+        if (pedidos.isEmpty()) {
+            sb.append("Nenhum pedido cadastrado.");
+        } else {
+            for (Pedido p : pedidos) {
+                sb.append("Número do Pedido: ").append(p.getNumeroPedido())
+                        .append(", Cliente: ").append(p.getCliente().getNome())
+                        .append(", Filmes: ").append(p.getFilmes().stream().map(Filme::getTitulo).toList()).append("\n");
+            }
         }
         listaPedidosArea.setText(sb.toString());
     }

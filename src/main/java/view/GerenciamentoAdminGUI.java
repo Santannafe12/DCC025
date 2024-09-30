@@ -1,6 +1,14 @@
+// Felipe Souza Magalhães Sant'Anna / 202465148A
+// Gabriel de Oliveira Vieira / 202265029A
+// Isabela Salvador Romão / 202165065AB
+// Maria Luiza Dornelas Corrêa / 201665194C
+
 package view;
 
 import controller.GerenciamentoAdmin;
+import exception.CpfException;
+import exception.EmailException;
+import exception.TelefoneException;
 import model.Funcionario;
 
 import javax.swing.*;
@@ -134,25 +142,47 @@ public class GerenciamentoAdminGUI {
         adicionarFrame.add(enderecoField);
         adicionarFrame.add(new JLabel("Salário:"));
         adicionarFrame.add(salarioField);
-        adicionarFrame.add(new JLabel("Telefone (código e número):"));
+        adicionarFrame.add(new JLabel("Telefone:"));
         adicionarFrame.add(telefoneField);
 
         JButton salvarButton = new JButton("Salvar");
         salvarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String nome = nomeField.getText();
-                String senha = senhaField.getText();
-                String email = emailField.getText();
-                String cpf = cpfField.getText();
-                String endereco = enderecoField.getText();
-                double salario = Double.parseDouble(salarioField.getText());
-                String telefone = telefoneField.getText();
+                String nome = nomeField.getText().trim();
+                String senha = senhaField.getText().trim();
+                String email = emailField.getText().trim();
+                String cpf = cpfField.getText().trim();
+                String endereco = enderecoField.getText().trim();
+                String salarioText = salarioField.getText().trim();
+                String telefone = telefoneField.getText().trim();
+
+                if (nome.isEmpty() || senha.isEmpty() || email.isEmpty() || cpf.isEmpty() || endereco.isEmpty() || salarioText.isEmpty() || telefone.isEmpty()) {
+                    JOptionPane.showMessageDialog(adicionarFrame, "Todos os campos devem ser preenchidos.", "Erro", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+
+                double salario;
+
+                try {
+                    salario = Double.parseDouble(salarioText);
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(adicionarFrame, "Salário deve ser um número válido.", "Erro", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
 
                 Funcionario funcionario = new Funcionario(nome, senha, email, cpf, endereco, telefone, salario);
-                gerenciamentoAdmin.adicionar(funcionario);
-                JOptionPane.showMessageDialog(adicionarFrame, "Funcionário adicionado com sucesso!");
-                adicionarFrame.dispose();
+
+                try {
+                    funcionario.validaEmail(email);
+                    funcionario.validaCpf(cpf);
+                    funcionario.validaTelefone(telefone);
+                    gerenciamentoAdmin.adicionar(funcionario);
+                    JOptionPane.showMessageDialog(adicionarFrame, "Cliente adicionado com sucesso!");
+                } catch (EmailException | CpfException | TelefoneException | IllegalArgumentException exception) {
+                    JOptionPane.showMessageDialog(adicionarFrame, exception.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
 
@@ -169,6 +199,7 @@ public class GerenciamentoAdminGUI {
         JTextField salarioField = new JTextField(String.valueOf(funcionario.getSalario()));
         JTextField emailField = new JTextField(funcionario.getEmail());
         JTextField enderecoField = new JTextField(funcionario.getEndereco());
+        JTextField telefoneField = new JTextField(funcionario.getTelefone());
 
         editarFrame.add(new JLabel("Nome:"));
         editarFrame.add(nomeField);
@@ -178,20 +209,52 @@ public class GerenciamentoAdminGUI {
         editarFrame.add(enderecoField);
         editarFrame.add(new JLabel("Salário:"));
         editarFrame.add(salarioField);
+        editarFrame.add(new JLabel("Telefone:"));
+        editarFrame.add(telefoneField);
 
         JButton salvarButton = new JButton("Salvar");
         salvarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String novoNome = nomeField.getText();
-                double novoSalario = Double.parseDouble(salarioField.getText());
-                String novoEmail = emailField.getText();
-                String novoEndereco = enderecoField.getText();
+                String novoNome = nomeField.getText().trim();
+                String novoEmail = emailField.getText().trim();
+                String novoEndereco = enderecoField.getText().trim();
+                String novoSalarioText = salarioField.getText().trim();
+                String novoTelefone = telefoneField.getText().trim();
+
+                if (novoNome.isEmpty() || novoEmail.isEmpty() || novoEndereco.isEmpty() || novoSalarioText.isEmpty() || novoTelefone.isEmpty()) {
+                    JOptionPane.showMessageDialog(editarFrame, "Todos os campos devem ser preenchidos.", "Erro", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                double novoSalario;
+
+                try {
+                    novoSalario = Double.parseDouble(novoSalarioText);
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(editarFrame, "Salário deve ser um número válido.", "Erro", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                try {
+                    funcionario.validaEmail(novoEmail);
+                } catch (EmailException emailException) {
+                    JOptionPane.showMessageDialog(editarFrame, "Formato de e-mail inválido.", "Erro", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                try {
+                    funcionario.validaTelefone(novoTelefone);
+                } catch (TelefoneException telefoneException) {
+                    JOptionPane.showMessageDialog(editarFrame, "Formato de Telefone inválido. Esperado (00) 0000-0000 ou (00) 00000-0000", "Erro", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
 
                 funcionario.setNome(novoNome);
                 funcionario.setSalario(novoSalario);
                 funcionario.setEmail(novoEmail);
                 funcionario.setEndereco(novoEndereco);
+                funcionario.setTelefone(novoTelefone);
 
                 gerenciamentoAdmin.editar(funcionario);
 
@@ -205,9 +268,12 @@ public class GerenciamentoAdminGUI {
     }
 
     private Funcionario localizarFuncionarioPorCPF(String cpf) {
+        if (cpf == null || cpf.trim().isEmpty()) {
+            return null;
+        }
         List<Funcionario> funcionarios = gerenciamentoAdmin.listar();
         for (Funcionario f : funcionarios) {
-            if (f.getCpf().equals(cpf)) {
+            if (f.getCpf() != null && f.getCpf().equals(cpf)) {
                 return f;
             }
         }

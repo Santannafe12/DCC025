@@ -1,3 +1,8 @@
+// Felipe Souza Magalhães Sant'Anna / 202465148A
+// Gabriel de Oliveira Vieira / 202265029A
+// Isabela Salvador Romão / 202165065AB
+// Maria Luiza Dornelas Corrêa / 201665194C
+
 package view;
 
 import controller.GerenciamentoAdmin;
@@ -23,7 +28,7 @@ public class LoginGUI extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
 
-        lblUsuario = new JLabel("Usuário(CPF):");
+        lblUsuario = new JLabel("Usuário:");
         lblUsuario.setBounds(10, 10, 80, 25);
         add(lblUsuario);
 

@@ -1,3 +1,8 @@
+// Felipe Souza Magalhães Sant'Anna / 202465148A
+// Gabriel de Oliveira Vieira / 202265029A
+// Isabela Salvador Romão / 202165065AB
+// Maria Luiza Dornelas Corrêa / 201665194C
+
 package controller;
 
 import model.Filme;
@@ -39,7 +44,6 @@ public class GerenciamentoFilme implements ICrud<Filme> {
         for (int i = 0; i < filmes.size(); i++) {
             Filme filme = filmes.get(i);
             if (filme.getTitulo().equalsIgnoreCase(filmeEditado.getTitulo())) {
-                // Atualiza os dados do filme
                 filme.setPreco(filmeEditado.getPreco());
                 break;
             }

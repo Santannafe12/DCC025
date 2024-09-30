@@ -1,6 +1,14 @@
+// Felipe Souza Magalhães Sant'Anna / 202465148A
+// Gabriel de Oliveira Vieira / 202265029A
+// Isabela Salvador Romão / 202165065AB
+// Maria Luiza Dornelas Corrêa / 201665194C
+
 package view;
 
 import controller.GerenciamentoCliente;
+import exception.CpfException;
+import exception.EmailException;
+import exception.TelefoneException;
 import model.Cliente;
 import model.Usuario;
 
@@ -13,7 +21,6 @@ import java.util.List;
 public class GerenciamentoClienteGUI extends JFrame {
     private final GerenciamentoCliente gerenciamentoCliente;
     private JTextField nomeField, emailField, cpfField, enderecoField, telefoneField;
-    private JTextArea listaClientesArea;
 
     public GerenciamentoClienteGUI() {
         gerenciamentoCliente = new GerenciamentoCliente();
@@ -27,7 +34,7 @@ public class GerenciamentoClienteGUI extends JFrame {
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
-        JPanel painelEntrada = new JPanel(new GridLayout(7, 2));
+        JPanel painelEntrada = new JPanel(new GridLayout(8, 2));
 
         painelEntrada.add(new JLabel("Nome:"));
         nomeField = new JTextField();
@@ -62,7 +69,18 @@ public class GerenciamentoClienteGUI extends JFrame {
         removerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                removerCliente();
+                String cpf = JOptionPane.showInputDialog("Digite o CPF do cliente a ser removido:");
+                if (cpf != null && !cpf.trim().isEmpty()) {
+                    Cliente clienteARemover = localizarClientePorCPF(cpf);
+                    if (clienteARemover != null) {
+                        gerenciamentoCliente.remover(clienteARemover);
+                        JOptionPane.showMessageDialog(null, "Cliente removido com sucesso!");
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Cliente não encontrado.");
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "CPF não pode ser vazio.");
+                }
             }
         });
         painelEntrada.add(removerButton);
@@ -71,25 +89,20 @@ public class GerenciamentoClienteGUI extends JFrame {
         editarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                editarCliente();
+                String cpf = JOptionPane.showInputDialog("Digite o CPF do cliente a ser editado:");
+                if (cpf != null && !cpf.trim().isEmpty()) {
+                    Cliente clienteAEditar = localizarClientePorCPF(cpf);
+                    if (clienteAEditar != null) {
+                        abrirTelaEditarCliente(clienteAEditar);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Cliente não encontrado.");
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "CPF não pode ser vazio.");
+                }
             }
         });
         painelEntrada.add(editarButton);
-
-        JButton voltarButton = new JButton("Voltar");
-        voltarButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new MainGUI();
-                dispose();
-            }
-        });
-        add(voltarButton);
-        painelEntrada.add(voltarButton);
-
-        listaClientesArea = new JTextArea();
-        listaClientesArea.setEditable(false);
-        JScrollPane scrollPane = new JScrollPane(listaClientesArea);
 
         JButton listarButton = new JButton("Listar Clientes");
         listarButton.addActionListener(new ActionListener() {
@@ -98,87 +111,111 @@ public class GerenciamentoClienteGUI extends JFrame {
                 listarClientes();
             }
         });
+        painelEntrada.add(listarButton);
 
-        add(painelEntrada, BorderLayout.NORTH);
-        add(scrollPane, BorderLayout.CENTER);
-        add(listarButton, BorderLayout.SOUTH);
+        JButton voltarButton = new JButton("Voltar");
+        voltarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new MainGUI();
+                GerenciamentoClienteGUI.this.dispose();
+            }
+        });
+        painelEntrada.add(voltarButton);
 
+        add(painelEntrada, BorderLayout.CENTER);
         setVisible(true);
     }
 
     private void adicionarCliente() {
-        String nome = nomeField.getText();
-        String email = emailField.getText();
-        String cpf = cpfField.getText();
-        String endereco = enderecoField.getText();
-        String telefone = telefoneField.getText();
-        Usuario.Tipo cargo = Usuario.Tipo.CLIENTE;
+        String nome = nomeField.getText().trim();
+        String email = emailField.getText().trim();
+        String cpf = cpfField.getText().trim();
+        String endereco = enderecoField.getText().trim();
+        String telefone = telefoneField.getText().trim();
 
         if (nome.isEmpty() || email.isEmpty() || cpf.isEmpty() || endereco.isEmpty() || telefone.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Por favor, preencha todos os campos.", "Erro", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        Cliente cliente = new Cliente(nome, email, cpf, endereco, telefone, cargo);
-        try {
-            gerenciamentoCliente.adicionar(cliente);
-            JOptionPane.showMessageDialog(this, "Cliente adicionado com sucesso!");
-            limparCampos();
-        } catch (IllegalArgumentException e) {
-            JOptionPane.showMessageDialog(this, e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
-    private void removerCliente() {
-        String cpf = cpfField.getText();
-        if (cpf.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Por favor, insira o CPF do cliente a ser removido.", "Erro", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        Cliente cliente = new Cliente("", "", cpf, "", null, Usuario.Tipo.CLIENTE);
-        gerenciamentoCliente.remover(cliente);
-        JOptionPane.showMessageDialog(this, "Cliente removido com sucesso!");
-        limparCampos();
-    }
-
-    private void editarCliente() {
-        String nome = nomeField.getText();
-        String email = emailField.getText();
-        String cpf = cpfField.getText();
-        String endereco = enderecoField.getText();
-        String telefone = telefoneField.getText();
-
-        if (cpf.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Por favor, insira o CPF do cliente a ser editado.", "Erro", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Todos os campos devem ser preenchidos.", "Erro", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
         Cliente cliente = new Cliente(nome, email, cpf, endereco, telefone, Usuario.Tipo.CLIENTE);
-        gerenciamentoCliente.editar(cliente);
-        JOptionPane.showMessageDialog(this, "Cliente editado com sucesso!");
-        limparCampos();
+
+        try {
+            cliente.validaEmail(email);
+            cliente.validaCpf(cpf);
+            cliente.validaTelefone(telefone);
+            gerenciamentoCliente.adicionar(cliente);
+            JOptionPane.showMessageDialog(this, "Cliente adicionado com sucesso!");
+        } catch (EmailException | CpfException | TelefoneException | IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void abrirTelaEditarCliente(Cliente cliente) {
+        JTextField nomeField = new JTextField(cliente.getNome());
+        JTextField emailField = new JTextField(cliente.getEmail());
+        JTextField enderecoField = new JTextField(cliente.getEndereco());
+        JTextField telefoneField = new JTextField(cliente.getTelefone());
+
+        JPanel painelEditar = new JPanel(new GridLayout(5, 2));
+        painelEditar.add(new JLabel("Nome:"));
+        painelEditar.add(nomeField);
+        painelEditar.add(new JLabel("Email:"));
+        painelEditar.add(emailField);
+        painelEditar.add(new JLabel("Endereço:"));
+        painelEditar.add(enderecoField);
+        painelEditar.add(new JLabel("Telefone:"));
+        painelEditar.add(telefoneField);
+
+        int option = JOptionPane.showConfirmDialog(null, painelEditar, "Editar Cliente", JOptionPane.OK_CANCEL_OPTION);
+        if (option == JOptionPane.OK_OPTION) {
+            String novoNome = nomeField.getText().trim();
+            String novoEmail = emailField.getText().trim();
+            String novoEndereco = enderecoField.getText().trim();
+            String novoTelefone = telefoneField.getText().trim();
+
+            try {
+                cliente.validaEmail(novoEmail);
+                cliente.validaTelefone(novoTelefone);
+                cliente.setNome(novoNome);
+                cliente.setEmail(novoEmail);
+                cliente.setEndereco(novoEndereco);
+                cliente.setTelefone(novoTelefone);
+                gerenciamentoCliente.editar(cliente);
+                JOptionPane.showMessageDialog(null, "Cliente editado com sucesso!");
+            } catch (EmailException | TelefoneException e) {
+                JOptionPane.showMessageDialog(this, e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+            } catch (IllegalArgumentException e) {
+                JOptionPane.showMessageDialog(this, "Dados inválidos: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }
 
     private void listarClientes() {
         List<Cliente> clientes = gerenciamentoCliente.listar();
-        StringBuilder sb = new StringBuilder();
-        for (Cliente c : clientes) {
-            sb.append("Nome: ").append(c.getNome())
-                    .append(", Email: ").append(c.getEmail())
-                    .append(", CPF: ").append(c.getCpf())
-                    .append(", Endereço: ").append(c.getEndereco())
-                    .append(", Telefone: ").append(c.getTelefone())
-                    .append("\n");
+        StringBuilder lista = new StringBuilder();
+        if (clientes.isEmpty()) {
+            lista.append("Nenhum cliente cadastrado.");
+        } else {
+            for (Cliente c : clientes) {
+                lista.append("Nome: ").append(c.getNome())
+                        .append(", Email: ").append(c.getEmail())
+                        .append(", CPF: ").append(c.getCpf())
+                        .append(", Endereço: ").append(c.getEndereco())
+                        .append(", Telefone: ").append(c.getTelefone()).append("\n");
+            }
         }
-        listaClientesArea.setText(sb.toString());
+        JOptionPane.showMessageDialog(this, lista.toString());
     }
 
-    private void limparCampos() {
-        nomeField.setText("");
-        emailField.setText("");
-        cpfField.setText("");
-        enderecoField.setText("");
-        telefoneField.setText("");
+    private Cliente localizarClientePorCPF(String cpf) {
+        List<Cliente> clientes = gerenciamentoCliente.listar();
+        for (Cliente c : clientes) {
+            if (c.getCpf() != null && c.getCpf().equals(cpf)) {
+                return c;
+            }
+        }
+        return null;
     }
 }

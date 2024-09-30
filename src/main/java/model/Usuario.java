@@ -1,3 +1,8 @@
+// Felipe Souza Magalhães Sant'Anna / 202465148A
+// Gabriel de Oliveira Vieira / 202265029A
+// Isabela Salvador Romão / 202165065AB
+// Maria Luiza Dornelas Corrêa / 201665194C
+
 package model;
 
 import exception.*;
@@ -19,47 +24,44 @@ public abstract class Usuario implements Serializable {
 
     public Usuario(String nome, String email, String cpf, String endereco, String telefone, Tipo cargo) {
         this.nome = nome;
-        if(validaEmail(email)){
-            this.email = email;
-        }
-        if(validaCpf(cpf)){
-            this.cpf = cpf.replaceAll("\\D", "");
-        }
+        this.email = email;
+        this.cpf = cpf.replaceAll("\\D", "");
         this.endereco = endereco;
         this.telefone = telefone;
         this.cargo = cargo;
     }
 
-    private boolean validaEmail(String email) {
+    public boolean validaEmail(String email) throws EmailException {
         Pattern pattern = Pattern.compile("^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,}$");
-        
-        try {
-            Matcher matcher = pattern.matcher(email);
-            if (!matcher.matches()) {
-                throw new EmailException("Formato de e-mail inválido: " + email);
-            }
-            return true;
-        } catch (EmailException e) {
-            System.out.println(e.getMessage());
-            return false;
+
+        Matcher matcher = pattern.matcher(email);
+        if (!matcher.matches()) {
+            throw new EmailException("Formato de e-mail inválido: " + email);
         }
+
+        return true;
     }
 
-    private boolean validaCpf(String cpf) {
+    public boolean validaCpf(String cpf) throws CpfException {
         String regex = "^\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}$";
 
-        try {
-            if (!cpf.matches(regex)) {
-                throw new CpfException("Formato de CPF inválido: " + cpf);
-            }
-            return true;
-        } catch (CpfException e) {
-            System.out.println(e.getMessage());
-            return false;
+        if (!cpf.matches(regex)) {
+            throw new CpfException("Formato de CPF inválido: " + cpf);
         }
+
+        return true;
     }
 
-    // Getters e setters
+    public boolean validaTelefone(String telefone) throws TelefoneException {
+        String regex = "^\\(\\d{2}\\) \\d{4,5}-\\d{4}$";
+
+        if (!telefone.matches(regex)) {
+            throw new TelefoneException("Formato de telefone inválido: " + telefone);
+        }
+
+        return true;
+    }
+
     public String getNome(){
         return this.nome;
     }
@@ -73,9 +75,13 @@ public abstract class Usuario implements Serializable {
     }
 
     public String getCpf() {
-        return this.cpf.substring(0, 3) + "." + 
-                this.cpf.substring(3, 6) + "." + 
-                this.cpf.substring(6, 9) + "-" + 
+        if (this.cpf == null || this.cpf.length() < 11) {
+            return "";
+        }
+
+        return this.cpf.substring(0, 3) + "." +
+                this.cpf.substring(3, 6) + "." +
+                this.cpf.substring(6, 9) + "-" +
                 this.cpf.substring(9, 11);
     }
 

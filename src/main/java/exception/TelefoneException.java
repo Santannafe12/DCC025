@@ -5,8 +5,8 @@
 
 package exception;
 
-public class EmailException extends Exception {
-    public EmailException(String mensagem) {
-        super(mensagem);
+public class TelefoneException extends Exception {
+    public TelefoneException(String message) {
+        super(message);
     }
 }
