@@ -2,6 +2,7 @@ package view;
 
 import controller.GerenciamentoAdmin;
 import model.Funcionario;
+import model.Sessao;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -50,8 +51,8 @@ public class LoginGUI extends JFrame {
                 if (validarLogin(usuario, senha)) {
                     JOptionPane.showMessageDialog(null, "Login bem-sucedido");
                     dispose();
-                    boolean isAdmin = "admin".equals(usuario) && "123".equals(senha);
-                    new MainGUI(isAdmin);
+                    Sessao.setAdmin("admin".equals(usuario) && "admin".equals(senha));
+                    new MainGUI();
                 } else {
                     JOptionPane.showMessageDialog(null, "Login inválido");
                 }
@@ -60,7 +61,7 @@ public class LoginGUI extends JFrame {
     }
 
     private boolean validarLogin(String usuario, String senha) {
-        if ("admin".equals(usuario) && "123".equals(senha)) {
+        if ("admin".equals(usuario) && "admin".equals(senha)) {
             return true;
         }
 
@@ -72,11 +73,5 @@ public class LoginGUI extends JFrame {
         }
 
         return false;
-    }
-
-
-    public static void main(String[] args) {
-        LoginGUI login = new LoginGUI();
-        login.setVisible(true);
     }
 }

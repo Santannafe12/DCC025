@@ -23,7 +23,6 @@ public class GerenciamentoAdminGUI {
         frame.setSize(400, 400);
         frame.setLayout(new BorderLayout());
 
-        // Painel para os campos de entrada
         JPanel painelEntrada = new JPanel(new GridLayout(4, 2));
 
         JButton adicionarButton = new JButton("Adicionar Funcionário");
@@ -99,7 +98,7 @@ public class GerenciamentoAdminGUI {
         voltarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new MainGUI(false);
+                new MainGUI();
                 frame.dispose();
             }
         });

@@ -2,6 +2,7 @@ package view;
 
 public class Main {
     public static void main(String[] args) {
-        new LoginGUI();
+        LoginGUI login = new LoginGUI();
+        login.setVisible(true);
     }
 }
