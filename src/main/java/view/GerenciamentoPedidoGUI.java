@@ -120,14 +120,14 @@ public class GerenciamentoPedidoGUI extends JFrame {
             return;
         }
 
-        Filme filme = localizarFilmePorTitulo(tituloFilme); // Localizando o filme pelo título
+        Filme filme = localizarFilmePorTitulo(tituloFilme);
         if (filme == null) {
             JOptionPane.showMessageDialog(this, "Filme não encontrado com o título: " + tituloFilme, "Erro", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
         Pedido pedido = new Pedido(cliente, Integer.parseInt(numeroPedido));
-        pedido.adicionaFilme(filme); // Adicionando o filme ao pedido
+        pedido.adicionaFilme(filme);
 
         try {
             gerenciamentoPedido.adicionar(pedido);

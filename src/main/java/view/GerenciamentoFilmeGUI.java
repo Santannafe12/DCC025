@@ -140,6 +140,10 @@ public class GerenciamentoFilmeGUI {
                     String titulo = tituloField.getText();
                     String genero = generoField.getText();
                     String[] dataParts = dataLancamentoField.getText().split("/");
+                    String dataLancamentoText = dataLancamentoField.getText();
+                    if (!isValidDate(dataLancamentoText)) {
+                        throw new IllegalArgumentException("Data deve estar no formato dd/MM/yyyy.");
+                    }
                     Data dataLancamento = new Data(Integer.parseInt(dataParts[0]), Integer.parseInt(dataParts[1]), Integer.parseInt(dataParts[2]));
                     String diretor = diretorField.getText();
                     double preco = Double.parseDouble(precoField.getText());
@@ -157,6 +161,12 @@ public class GerenciamentoFilmeGUI {
         adicionarFrame.add(salvarButton);
         adicionarFrame.setVisible(true);
     }
+
+    private boolean isValidDate(String date) {
+        String datePattern = "^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/(\\d{4})$";
+        return date.matches(datePattern);
+    }
+
 
     private void abrirTelaEditarFilme(Filme filme) {
         JFrame editarFrame = new JFrame("Editar Filme");
